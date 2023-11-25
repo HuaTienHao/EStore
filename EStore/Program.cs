@@ -1,3 +1,4 @@
+using EStore;
 using EStore.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,8 @@ builder.Services
     .AddDefaultUI()
     .AddDefaultTokenProviders();
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IHomeRepository, HomeRepositories>();
+//builder.Services.AddTransient<ICartRepository, CartRepository>();
 
 var app = builder.Build();
 /*using(var scope = app.Services.CreateScope())
