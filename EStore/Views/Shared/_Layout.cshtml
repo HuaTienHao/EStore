@@ -1,4 +1,8 @@
-﻿<!doctype html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -23,8 +27,19 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/Home/Privacy">Privacy</a>
+                        <a class="nav-link" href="/Home/About">About</a>
                     </li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Dashboard/Index">Dashboard</a>
+                            </li>
+                        }
+                    }
+                    
+
                     @* <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                         <div class="dropdown-menu">

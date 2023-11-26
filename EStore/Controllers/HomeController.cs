@@ -30,7 +30,7 @@ namespace EStore.Controllers
             return View(productModel);
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }
