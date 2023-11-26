@@ -1,0 +1,78 @@
+﻿@model DashboardVM
+
+@{
+	ViewData["Title"] = "Dashboard";
+}
+
+<div class="container">
+	<div class="mt-3">
+		<h3>List of Categories</h3>
+		<a type="button" class="btn btn-primary m-3" href="">Create a new category</a>
+
+		<table class="table table-hover">
+			<thead>
+				<tr class="table-primary text-center">
+					<th scope="col">Id</th>
+					<th scope="col">Category name</th>
+					<th scope="col"> </th>
+				</tr>
+			</thead>
+
+			<tbody>
+				@foreach (var category in Model.Categories)
+				{
+					<tr class="table-secondary text-center">
+						<th scope="row">@category.Id</th>
+						<td>@category.CategoryName</td>
+						<td>
+							<a href="" type="button" class="btn btn-success">
+								Edit
+							</a>
+
+							<a href="" type="button" class="btn btn-danger">
+								Remove
+							</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+
+	<div class ="mt-3">
+		<h3>List of Products</h3>
+		<a type="button" class="btn btn-primary m-3" href="">Create a new product</a>
+		
+		<div class="w-100 d-flex flex-wrap justify-content-between">
+			@foreach (var product in Model.Products)
+			{
+				<div class="card mx-2 my-4" style="width: 16rem;">
+					@if (string.IsNullOrEmpty(product.Image))
+					{
+						<img style="width:100%; height:300%" src="" class="card-img-top" alt="...">
+						// No img
+
+					}
+					else
+					{
+						<img style="width:100%; height:300%" src="/images/@product.Image" class="card-img-top" alt="...">
+					}
+					<div class="card-body">
+						<h5 class="card-title">@product.ProductName</h5>
+						<p class="card-text">
+							<b>Category: </b> @product.CategoryName <br>
+							<b>Store: </b> @product.StoreName <br>
+							<b>Price: </b> @product.Price
+						</p>
+						<a href="" type="button" class="btn btn-success">
+							Edit
+						</a>
+						<a href="" type="button" class="btn btn-danger">
+							Remove
+						</a>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</div>
