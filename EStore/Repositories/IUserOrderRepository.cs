@@ -1,6 +1,6 @@
 ﻿namespace EStore.Repositories
 {
-    public class IUerOrderRepository
+    public interface IUserOrderRepository
     {
         Task<IEnumerable<Order>> UserOrders();
     }

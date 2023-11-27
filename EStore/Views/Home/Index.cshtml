@@ -52,7 +52,7 @@
                     <b>Store: </b> @product.StoreName <br>
                     <b>Price: </b> @product.Price
                 </p>
-                <button type="button" onclick="add(@product.Id)" class=" btn btn-primary">Add to cart</button>
+                <button type="button" onclick="add(@product.Id)" class="btn btn-primary">Add to cart</button>
             </div>
         </div>
     }
@@ -69,7 +69,7 @@
                 // }
             }
             try{
-                var response = await fetch('/Cart/AddItem?productId=${productId}');
+                var response = await fetch(`/Cart/AddItem?productId=${productId}`);
                 if(response.status == 200){
                     var result = await response.json();
                     var cartCountEl = document.getElementById("cartCount");

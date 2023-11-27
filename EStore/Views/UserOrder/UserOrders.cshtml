@@ -15,10 +15,10 @@
           @foreach(var order in Model)
           {
               <tr>
-                  <td>@order.CreateDate.Tostring("dd-MM-yyyy")</td>
+                  <td>@order.CreateDate.ToString("dd-MM-yyyy")</td>
                   <td>@order.OrderStatus.StatusName</td>
               </tr>
-                @if (order.OrderDetail != null && order.OrderDetail.Count > 0)
+                @if (order.OrderDetails != null && order.OrderDetails.Count > 0)
                 {
                     <tr>
                         <td>
@@ -28,7 +28,7 @@
                                             Total:
                                     </td>
                                     <td>
-                                        @(order.OrderDetail.Select(item => item.Product.Price * item.Quantity.Sum()))
+                                        @(order.OrderDetails.Select(item => item.Product.Price * item.Quantity))
                                     </td>
                                 </tr>
                             <tr>
@@ -39,7 +39,7 @@
                                 <th>Total Price</th>
                                 <th>Action</th>
                             </tr>
-                            @foreach (var item in order.OrderDetail)
+                            @foreach (var item in order.OrderDetails)
                             {
                                 <tr>
                                     <td>@item.Product.ProductName</td>
@@ -53,7 +53,7 @@
                                             <img src="/images/@item.Product.Image" style="width:80px;height:100px" />
                                         }
                                     </td>
-                                    <td>@item.Product.Genre.GenreName</td>
+                                    <td>@item.Product.Category.CategoryName</td>
                                     <td>@item.Product.Price X @item.Quantity</td>
                                     <td>@(item.Product.Price * item.Quantity)</td>
                                 </tr>

@@ -31,7 +31,7 @@ namespace EStore.Controllers
         }
         public async Task<IActionResult> GetTotalItemInCart()
         {
-            int cartItem = await _cartRepo.GetTotalItemInCount();
+            int cartItem = await _cartRepo.GetCartItemCount();
             return Ok(cartItem);
         }
         public async Task<IActionResult> Checkout()

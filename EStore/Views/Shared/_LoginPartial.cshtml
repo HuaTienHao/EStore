@@ -13,7 +13,7 @@
 {
     <li class="nav-item">
         <a  class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-            Hello <span id="usermane">@User.Identity?.Name!</span>
+            Hello <span id="username">@User.Identity?.Name</span>!  
             @if (User.IsInRole("Admin"))
             {
                 <span>(Admin)</span>

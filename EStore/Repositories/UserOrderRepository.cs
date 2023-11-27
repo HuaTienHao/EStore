@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace EStore.Repositories
 {
-    public class UserOrderRepository : IUerOrderRepository
+    public class UserOrderRepository : IUserOrderRepository
     {
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -20,9 +21,9 @@ namespace EStore.Repositories
                 throw new Exception("User is not logged-in");
             var orders = await  _db.Orders
                             .Include(x => x.OrderStatus)
-                            .Include(x => x.OrderDetail)
+                            .Include(x => x.OrderDetails)
                             .ThenInclude(x => x.Product)
-                            .ThenInclude(x => x.Genre)
+                            .ThenInclude(x => x.Category)
                             .Where(a => a.UserId == userId)
                             .ToListAsync();
             return orders;
