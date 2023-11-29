@@ -22,7 +22,7 @@ namespace EStore.Repositories
             IEnumerable<Product> products = await (from product in _db.Products
                             join category in _db.Categories
                             on product.CategoryId equals category.Id
-                            where string.IsNullOrWhiteSpace(sTerm) ||(product != null && product.ProductName.ToLower().StartsWith(sTerm))
+                            where string.IsNullOrWhiteSpace(sTerm) ||(product != null && product.ProductName.ToLower().Contains(sTerm))
                             select new Product
                             {
                                 Id = product.Id,
