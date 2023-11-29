@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace EStore.Repositories
+namespace BookShoppingCartMvcUI.Repositories
 {
     public class CartRepository : ICartRepository
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         public CartRepository(ApplicationDbContext db, IHttpContextAccessor httpContextAccessor,
             UserManager<IdentityUser> userManager)
         {
@@ -49,7 +50,7 @@ namespace EStore.Repositories
                         ProductId = productId,
                         ShoppingCartId = cart.Id,
                         Quantity = quantity,
-                        UnitPrice = product.Price // it is a new line after update
+                        UnitPrice = product.Price  // it is a new line after update
                     };
                     _db.CartDetails.Add(cartItem);
                 }
@@ -62,7 +63,9 @@ namespace EStore.Repositories
             var cartItemCount = await GetCartItemCount(userId);
             return cartItemCount;
         }
-        public async Task<int> RemoveItem(int productId)
+
+
+        public async Task<int> RemoveItem(int bookId)
         {
             //using var transaction = _db.Database.BeginTransaction();
             string userId = GetUserId();
@@ -75,23 +78,23 @@ namespace EStore.Repositories
                     throw new Exception("Invalid cart");
                 // cart detail section
                 var cartItem = _db.CartDetails
-                                  .FirstOrDefault(a => a.ShoppingCartId == cart.Id && a.ProductId == productId);
+                                  .FirstOrDefault(a => a.ShoppingCartId == cart.Id && a.ProductId == bookId);
                 if (cartItem is null)
                     throw new Exception("Not items in cart");
-                else if(cartItem.Quantity==1)
+                else if (cartItem.Quantity == 1)
                     _db.CartDetails.Remove(cartItem);
                 else
                     cartItem.Quantity = cartItem.Quantity - 1;
                 _db.SaveChanges();
-              //  transaction.Commit()
             }
             catch (Exception ex)
             {
+
             }
             var cartItemCount = await GetCartItemCount(userId);
             return cartItemCount;
-
         }
+
         public async Task<ShoppingCart> GetUserCart()
         {
             var userId = GetUserId();
@@ -105,11 +108,12 @@ namespace EStore.Repositories
             return shoppingCart;
 
         }
-        public async Task<ShoppingCart> GetCart(string userId) 
+        public async Task<ShoppingCart> GetCart(string userId)
         {
             var cart = await _db.ShoppingCarts.FirstOrDefaultAsync(x => x.UserId == userId);
             return cart;
         }
+
         public async Task<int> GetCartItemCount(string userId = "")
         {
             if (!string.IsNullOrEmpty(userId))
@@ -117,10 +121,10 @@ namespace EStore.Repositories
                 userId = GetUserId();
             }
             var data = await (from cart in _db.ShoppingCarts
-                              join CartDetail in _db.CartDetails
-                              on cart.Id equals CartDetail.ShoppingCartId
-                              select new { CartDetail.Id }
-                              ).ToListAsync();
+                              join cartDetail in _db.CartDetails
+                              on cart.Id equals cartDetail.ShoppingCartId
+                              select new { cartDetail.Id }
+                        ).ToListAsync();
             return data.Count;
         }
 
@@ -181,6 +185,7 @@ namespace EStore.Repositories
             string userId = _userManager.GetUserId(principal);
             return userId;
         }
+
+
     }
 }
-
