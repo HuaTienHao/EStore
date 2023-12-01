@@ -1,0 +1,58 @@
+﻿@model Product
+@{
+    ViewData["Title"] = Model.ProductName;
+}
+
+<div class="container mt-5 bg-secondary rounded-3">
+    <div class="row p-4">
+        <div class="col-7">
+            <img style="width:100%; height:100%" src="/images/@Model.Image" class="rounded-3" />
+        </div>
+        <div class="col ms-2">
+            <h2 class="mb-3">@Model.ProductName</h2>
+
+            <h3 class="mb-3">
+                Category:
+                <small class="text-muted">@Model.CategoryName</small>
+            </h3>
+
+            <h3 class="mb-3">
+                Store:
+                <small class="text-muted">@Model.StoreName</small>
+            </h3>
+
+            <h3 class="mb-3">
+                Price:
+                <small class="text-muted">@Model.Price</small>
+            </h3>
+
+            <button type="button" onclick="add(@Model.Id)" class="btn btn-primary">Add to cart</button>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        async function add(productId){
+            var usernameEl = document.getElementById("username");
+            if (usernameEl == null) {
+                window.location.href = "/Identity/Account/Login";
+                //var username = usernameEl.innerText;
+                //if (username.length < 1) {
+                //    window.location.href = "/Indentity/Account/Login";
+                // }
+            }
+            try{
+                var response = await fetch(`/Cart/AddItem?productId=${productId}`);
+                if(response.status == 200){
+                    var result = await response.json();
+                    var cartCountEl = document.getElementById("cartCount");
+                    cartCountEl.innerHTML = result;
+                    window.location.href = "#cartCount";
+                }
+            }
+            catch(err){
+                console.log(err);
+            } 
+        }
+    </script>
+}
