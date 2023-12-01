@@ -16,6 +16,13 @@ INSERT INTO Product VALUES (N'Laptop Acer Nitro 16 Phoenix ',25990000,'acer-lap'
 INSERT INTO Product VALUES (N'Apple MacBook Pro 16 M2 Max',94690000,'apple-lap',4,'Apple')
 INSERT INTO Product VALUES (N'Laptop Dell Inspiron 3530 ',18590000,'dell-lap',4,'Dell')
 
+INSERT INTO OrderStatus VALUES ('Pending',1)
+INSERT INTO OrderStatus VALUES ('Shipped',2)
+INSERT INTO OrderStatus VALUES ('Delivered',3)
+INSERT INTO OrderStatus VALUES ('Cancelled',4)
+INSERT INTO OrderStatus VALUES ('Returned',6)
+INSERT INTO OrderStatus VALUES ('Refund',6)
+
 delete from Product where CategoryId=4
 select * from Category
 select * from Product

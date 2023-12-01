@@ -8,40 +8,40 @@
     @if (Model != null && Model.Count()>0)
     {
       <table class="table table-striped">
-          <tr>
-              <th>OrderDate</th>
-              <th>OrderStatus</th>
+          <tr class="table-primary">
+              <th>Order Date</th>
+              <th>Order Status</th>
           </tr>
           @foreach(var order in Model)
           {
-              <tr>
+              <tr class="table-info">
                   <td>@order.CreateDate.ToString("dd-MM-yyyy")</td>
                   <td>@order.OrderStatus.StatusName</td>
               </tr>
-                @if (order.OrderDetails != null && order.OrderDetails.Count > 0)
-                {
+              @if (order.OrderDetails != null && order.OrderDetails.Count > 0)
+              {
+
                     <tr>
                         <td>
                             <table class="table table-striped">
-                                <tr> 
+                                <tr class="table-success">
                                     <td>
                                             Total:
                                     </td>
                                     <td>
-                                        @(order.OrderDetails.Select(item => item.Product.Price * item.Quantity))
+                                        @(order.OrderDetails.Select(item => item.Product.Price * item.Quantity).Sum())
                                     </td>
                                 </tr>
-                            <tr>
+                            <tr class="table-dark text-center">
                                 <th>Product</th>
                                 <th>Image</th>
                                 <th>Genre</th>
-                                <th>Unit Price(INR)</th>
+                                <th>Unit Price</th>
                                 <th>Total Price</th>
-                                <th>Action</th>
                             </tr>
                             @foreach (var item in order.OrderDetails)
                             {
-                                <tr>
+                                <tr class="table-secondary">
                                     <td>@item.Product.ProductName</td>
                                     <td>
                                         @if (string.IsNullOrEmpty(item.Product.Image))
