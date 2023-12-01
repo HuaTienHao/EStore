@@ -129,7 +129,6 @@ namespace EStore.Repositories
             using var transaction = _db.Database.BeginTransaction();
             try
             {
-                // logic
                 // move data from cartDetail to order and order detail then we will remove cart detail
                 var userId = GetUserId();
                 if (string.IsNullOrEmpty(userId))
@@ -144,7 +143,7 @@ namespace EStore.Repositories
                 var order = new Order
                 {
                     UserId = userId,
-                    CreateDate = DateTime.UtcNow,
+                    CreateDate = DateTime.Now,
                     OrderStatusId = 1//pending
                 };
                 _db.Orders.Add(order);
