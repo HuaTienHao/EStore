@@ -92,7 +92,7 @@ namespace EStore.Repositories
             return cartItemCount;
 
         }
-        public async Task<ShoppingCart> GetUserCart()
+        public async Task<DiscountVM> GetUserCart(string discountCode = "")
         {
             var userId = GetUserId();
             if (userId == null)
@@ -102,7 +102,18 @@ namespace EStore.Repositories
                                   .ThenInclude(a => a.Product)
                                   .ThenInclude(a => a.Category)
                                   .Where(a => a.UserId == userId).FirstOrDefaultAsync();
-            return shoppingCart;
+            var discount = await _db.Discounts.Where(d => d.DiscountCode == discountCode).FirstOrDefaultAsync();
+            DiscountVM discountVM = new DiscountVM
+            {
+                ShoppingCart = shoppingCart,
+                DiscountCode = discountCode
+            };
+            if (discount == null)
+                discountVM.DiscountAmount = 0;
+            else
+                discountVM.DiscountAmount = discount.DiscountAmount;
+
+            return discountVM;
 
         }
         public async Task<ShoppingCart> GetCart(string userId) 
@@ -124,7 +135,7 @@ namespace EStore.Repositories
             return data.Count;
         }
 
-        public async Task<bool> DoCheckout()
+        public async Task<bool> DoCheckout(int discount = 0)
         {
             using var transaction = _db.Database.BeginTransaction();
             try
@@ -140,11 +151,13 @@ namespace EStore.Repositories
                                     .Where(a => a.ShoppingCartId == cart.Id).ToList();
                 if (cartDetail.Count == 0)
                     throw new Exception("Cart is empty");
+
                 var order = new Order
                 {
                     UserId = userId,
                     CreateDate = DateTime.Now,
-                    OrderStatusId = 1//pending
+                    OrderStatusId = 1,//pending
+                    DiscountAmount = discount,
                 };
                 _db.Orders.Add(order);
                 _db.SaveChanges();

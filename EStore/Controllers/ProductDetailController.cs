@@ -29,8 +29,28 @@ namespace EStore.Controllers
                                  }).ToListAsync();
 
             Product productdetail = getproduct[0];
+            IEnumerable<Product> relatedProducts = await (from product in _context.Products
+                                                          join category in _context.Categories
+                                                          on product.CategoryId equals category.Id
+                                                          where category.Id == productdetail.CategoryId
+                                                          where product.Id != productdetail.Id
+                                                          select new Product
+                                                          {
+                                                              Id = product.Id,
+                                                              Image = product.Image,
+                                                              StoreName = product.StoreName,
+                                                              ProductName = product.ProductName,
+                                                              CategoryId = product.CategoryId,
+                                                              Price = product.Price,
+                                                              CategoryName = category.CategoryName,
+                                                          }).ToListAsync();
+            ProductDetailVM productDetailVM = new ProductDetailVM 
+            { 
+                ProductDetail = productdetail,
+                RelatedProducts = relatedProducts
+            };
 
-            return View(productdetail);
+            return View(productDetailVM);
         }
     }
 }

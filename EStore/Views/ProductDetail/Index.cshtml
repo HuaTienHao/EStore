@@ -1,32 +1,63 @@
-﻿@model Product
+﻿@model ProductDetailVM
 @{
-    ViewData["Title"] = Model.ProductName;
+    ViewData["Title"] = Model.ProductDetail.ProductName;
 }
 
-<div class="container mt-5 bg-secondary rounded-3">
-    <div class="row p-4">
-        <div class="col-7">
-            <img style="width:100%; height:100%" src="/images/@Model.Image" class="rounded-3" />
+<div class="container mt-5">
+    <div class="row p-3 bg-secondary rounded-3">
+        <div class="col-6">
+            <img style="width:100%; height:100%" src="/images/@Model.ProductDetail.Image" class="rounded-3" />
         </div>
         <div class="col ms-2">
-            <h2 class="mb-3">@Model.ProductName</h2>
+            <h2 class="mb-3">@Model.ProductDetail.ProductName</h2>
 
             <h3 class="mb-3">
                 Category:
-                <small class="text-muted">@Model.CategoryName</small>
+                <small class="text-muted">@Model.ProductDetail.CategoryName</small>
             </h3>
 
             <h3 class="mb-3">
                 Store:
-                <small class="text-muted">@Model.StoreName</small>
+                <small class="text-muted">@Model.ProductDetail.StoreName</small>
             </h3>
 
             <h3 class="mb-3">
                 Price:
-                <small class="text-muted">@Model.Price</small>
+                <small class="text-muted">@Model.ProductDetail.Price</small>
             </h3>
 
-            <button type="button" onclick="add(@Model.Id)" class="btn btn-primary">Add to cart</button>
+            <button type="button" onclick="add(@Model.ProductDetail.Id)" class="btn btn-primary">Add to cart</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <h1 class="text-center">Related products</h1>
+        <div class="w-100 mt-4 d-flex flex-wrap">
+            @foreach (var product in Model.RelatedProducts)
+            {
+                <div class="card mx-2 my-4" style="width: 16rem;">
+                    @if (string.IsNullOrEmpty(product.Image))
+                    {
+                        <img style="width:100%; height:300%" src="/images/NoImage.jpg" class="card-img-top" alt="...">
+                        // No img
+
+                    }
+                    else
+                    {
+                        <img style="width:100%; height:300%" src="/images/@product.Image" class="card-img-top" alt="...">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@product.ProductName</h5>
+                        <p class="card-text">
+                            <b>Category: </b> @product.CategoryName <br>
+                            <b>Store: </b> @product.StoreName <br>
+                            <b>Price: </b> @product.Price
+                        </p>
+                        <a class="btn btn-secondary" href="/ProductDetail/Index/?productId=@product.Id">View detail</a>
+                        <button type="button" onclick="add(@product.Id)" class="btn btn-primary">Add to cart</button>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>
