@@ -21,7 +21,7 @@
 
             @foreach (var item in Model.ShoppingCart.CartDetails)
             {
-                <tr class="table-secondary text-center">
+                <tr class="table-active text-center">
                     <td>@item.Product.ProductName</td>
                     <td>
                         @if (string.IsNullOrEmpty(item.Product.Image))
@@ -37,8 +37,8 @@
                     <td>@item.Product.Price X @item.Quantity</td>
                     <td>@(item.Product.Price * item.Quantity)</td>
                     <td>
-                        <a class="btn btn-info" href="/Cart/AddItem?productId=@item.ProductId&&redirect=1">+</a>
-                        <a class="btn btn-info" href="/Cart/RemoveItem?productId=@item.ProductId">-</a>
+                        <a class="btn btn-success" href="/Cart/AddItem?productId=@item.ProductId&&redirect=1">+</a>
+                        <a class="btn btn-danger" href="/Cart/RemoveItem?productId=@item.ProductId">-</a>
                     </td>
                 </tr>
             }
