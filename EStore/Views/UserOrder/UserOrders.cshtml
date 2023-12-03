@@ -29,7 +29,8 @@
                                             Total:
                                     </td>
                                     <td>
-                                        @(order.OrderDetails.Select(item => item.Product.Price * item.Quantity).Sum())
+                                        @(order.OrderDetails.Select(item => item.Product.Price * item.Quantity).Sum() * (100 - order.DiscountAmount) / 100) 
+                                        (Discounted @(order.DiscountAmount)%)
                                     </td>
                                 </tr>
                             <tr class="table-dark text-center">
@@ -41,7 +42,7 @@
                             </tr>
                             @foreach (var item in order.OrderDetails)
                             {
-                                <tr class="table-secondary">
+                                <tr class="table-secondary text-center">
                                     <td>@item.Product.ProductName</td>
                                     <td>
                                         @if (string.IsNullOrEmpty(item.Product.Image))

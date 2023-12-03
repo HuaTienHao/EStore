@@ -24,9 +24,9 @@ namespace EStore.Controllers
             var cartCount = await _cartRepo.RemoveItem(productId);
             return RedirectToAction("GetUserCart");
         }
-        public async Task<IActionResult> GetUserCart()
+        public async Task<IActionResult> GetUserCart(string discountCode = "")
         {
-            var cart = await _cartRepo.GetUserCart();
+            var cart = await _cartRepo.GetUserCart(discountCode);
             return View(cart);
         }
         public async Task<IActionResult> GetTotalItemInCart()
@@ -34,7 +34,7 @@ namespace EStore.Controllers
             int cartItem = await _cartRepo.GetCartItemCount();
             return Ok(cartItem);
         }
-        public async Task<IActionResult> Checkout(string discount = "")
+        public async Task<IActionResult> Checkout(int discount = 0)
         {
             bool isCheckedout = await _cartRepo.DoCheckout(discount);
             if (!isCheckedout)

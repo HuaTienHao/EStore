@@ -2,7 +2,8 @@
 {
     public class DiscountVM
     {
-        public string DiscountCode { get; set; }
-        public int DiscountAmount { get; set; }
+        public ShoppingCart ShoppingCart { get; set; }
+        public string DiscountCode { get; set; } = "";
+        public int DiscountAmount { get; set; } = 0;
     }
 }

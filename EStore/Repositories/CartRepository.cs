@@ -92,7 +92,7 @@ namespace EStore.Repositories
             return cartItemCount;
 
         }
-        public async Task<ShoppingCart> GetUserCart()
+        public async Task<DiscountVM> GetUserCart(string discountCode = "")
         {
             var userId = GetUserId();
             if (userId == null)
@@ -102,7 +102,18 @@ namespace EStore.Repositories
                                   .ThenInclude(a => a.Product)
                                   .ThenInclude(a => a.Category)
                                   .Where(a => a.UserId == userId).FirstOrDefaultAsync();
-            return shoppingCart;
+            var discount = await _db.Discounts.Where(d => d.DiscountCode == discountCode).FirstOrDefaultAsync();
+            DiscountVM discountVM = new DiscountVM
+            {
+                ShoppingCart = shoppingCart,
+                DiscountCode = discountCode
+            };
+            if (discount == null)
+                discountVM.DiscountAmount = 0;
+            else
+                discountVM.DiscountAmount = discount.DiscountAmount;
+
+            return discountVM;
 
         }
         public async Task<ShoppingCart> GetCart(string userId) 
@@ -124,7 +135,7 @@ namespace EStore.Repositories
             return data.Count;
         }
 
-        public async Task<bool> DoCheckout(string discount = "")
+        public async Task<bool> DoCheckout(int discount = 0)
         {
             using var transaction = _db.Database.BeginTransaction();
             try
@@ -145,13 +156,9 @@ namespace EStore.Repositories
                 {
                     UserId = userId,
                     CreateDate = DateTime.Now,
-                    OrderStatusId = 1//pending
+                    OrderStatusId = 1,//pending
+                    DiscountAmount = discount,
                 };
-                var findDiscount = _db.Discounts.Where(a => a.DiscountCode == discount).ToList();
-                if (findDiscount.Count != 0)
-                {
-                    order.DiscountAmount = findDiscount[0].DiscountAmount;
-                }
                 _db.Orders.Add(order);
                 _db.SaveChanges();
                 foreach (var item in cartDetail)
