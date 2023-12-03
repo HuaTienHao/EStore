@@ -124,7 +124,7 @@ namespace EStore.Repositories
             return data.Count;
         }
 
-        public async Task<bool> DoCheckout()
+        public async Task<bool> DoCheckout(string discount = "")
         {
             using var transaction = _db.Database.BeginTransaction();
             try
@@ -140,12 +140,18 @@ namespace EStore.Repositories
                                     .Where(a => a.ShoppingCartId == cart.Id).ToList();
                 if (cartDetail.Count == 0)
                     throw new Exception("Cart is empty");
+
                 var order = new Order
                 {
                     UserId = userId,
                     CreateDate = DateTime.Now,
                     OrderStatusId = 1//pending
                 };
+                var findDiscount = _db.Discounts.Where(a => a.DiscountCode == discount).ToList();
+                if (findDiscount.Count != 0)
+                {
+                    order.DiscountAmount = findDiscount[0].DiscountAmount;
+                }
                 _db.Orders.Add(order);
                 _db.SaveChanges();
                 foreach (var item in cartDetail)

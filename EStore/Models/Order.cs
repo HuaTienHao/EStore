@@ -10,6 +10,7 @@ namespace EStore.Models
         [Required]
         public string UserId { get; set; }
         public DateTime CreateDate { get; set; } = DateTime.Now;
+        public int DiscountAmount { get; set; } = 0;
         [Required]
         public int OrderStatusId { get; set; }
         public bool IsDeleted { get; set; } = false;

@@ -23,6 +23,10 @@ INSERT INTO OrderStatus VALUES ('Cancelled',4)
 INSERT INTO OrderStatus VALUES ('Returned',6)
 INSERT INTO OrderStatus VALUES ('Refund',6)
 
+INSERT INTO Discount VALUES ('DISCOUNT5',5)
+INSERT INTO Discount VALUES ('DISCOUNT10',10)
+INSERT INTO Discount VALUES ('DISCOUNT20',20)
+
 delete from Product where CategoryId=4
 select * from Category
 select * from Product

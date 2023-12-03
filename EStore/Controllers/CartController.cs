@@ -34,9 +34,9 @@ namespace EStore.Controllers
             int cartItem = await _cartRepo.GetCartItemCount();
             return Ok(cartItem);
         }
-        public async Task<IActionResult> Checkout()
+        public async Task<IActionResult> Checkout(string discount = "")
         {
-            bool isCheckedout = await _cartRepo.DoCheckout();
+            bool isCheckedout = await _cartRepo.DoCheckout(discount);
             if (!isCheckedout)
                 throw new Exception("Something happen in server side");
             return RedirectToAction("Index", "Home");

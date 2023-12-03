@@ -44,13 +44,17 @@
             }
         </table>
 
+        <form asp-action="Checkout">
+
+        </form>
         <div class="my-2">
+            <h5>Discount</h5>
             <h5>Total(INR): </h5>
             @(Model.CartDetails.Select(item => item.Product.Price * item.Quantity).Sum())
         </div>
 
         <div class="my-2">
-            <a class="btn btn-primary" href="/Cart/Checkout">Checkout</a>
+            <a class="btn btn-primary" href="/Cart/Checkout?discount=">Checkout</a>
         </div>
     }
     else
