@@ -19,6 +19,7 @@ namespace EStore.Controllers
         {
             IEnumerable<Product> products =await _homeRepository.GetProducts(sterm,categoryId);
             IEnumerable<Category> categories = await _homeRepository.Categories();
+
             ProductDisplayModel productModel = new ProductDisplayModel
             {
                 Products = products,

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<EStore.Models.Product>
+@{
+}
+
+<div class="container pt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-dark" href="/Dashboard/AddProduct">+ Add more</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Products</h3>
+            <!-- Thêm thanh tìm kiếm -->
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search" id="searchInput">
+                <button class="btn btn-outline-secondary" type="button" onclick="searchProducts()">Search</button>
+                <a href="/Dashboard/ProductGetAll" class="btn btn-dark"><i class="bi bi-arrow-counterclockwise"></i></a>
+
+            </div>
+
+            <table class="table table-stripped table-bordered table-dark">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Image</th>
+                        <th>Category</th>
+                        <th>Store</th>
+                        <th>Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.ProductName</td>
+                            <td>@item.Price</td>
+                            <td>@item.Image</td>
+                            <td>@item.CategoryName</td>
+                            <td>@item.StoreName</td>
+
+                            <td>
+                                <a class="btn btn-success" href="/Dashboard/UpdateProduct?id=@item.Id"><i class="bi bi-pen"></i></a> |
+                                <a class="btn btn-danger" onclick="return window.confirm('Are you sure?')" href="/Dashboard/DeleteProduct?id=@item.Id"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    function searchProducts() {
+        var searchTerm = document.getElementById("searchInput").value.toLowerCase();
+        window.location.href = "/Dashboard/ProductGetAll?searchTerm=" + searchTerm;
+    }
+</script>
+

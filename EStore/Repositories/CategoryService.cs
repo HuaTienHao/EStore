@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EStore.Repositories
 {
-    public class GenreService : IGenreService
+    public class CategoryService : ICategoryService
     {
         private readonly ApplicationDbContext context;
-        public GenreService(ApplicationDbContext context)
+        public CategoryService(ApplicationDbContext context)
         {
             this.context = context;
         }
+
         public bool Add(Category model)
         {
             try
@@ -64,5 +65,15 @@ namespace EStore.Repositories
                 return false;
             }
         }
+        public IEnumerable<Category> GetAll(string searchTerm = "")
+        {
+            searchTerm = searchTerm.ToLower();
+            var categories = context.Categories
+                .Where(c => string.IsNullOrWhiteSpace(searchTerm) || c.CategoryName.ToLower().Contains(searchTerm))
+                .ToList();
+
+            return categories;
+        }
+
     }
 }
