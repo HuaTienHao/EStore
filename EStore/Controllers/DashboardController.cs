@@ -14,9 +14,11 @@ namespace EStore.Controllers
     {
         private readonly ICategoryService service;
         private readonly IProductService productService;
+        private readonly ApplicationDbContext _context;
 
-        public DashboardController(ICategoryService service, IProductService productService)
+        public DashboardController(ICategoryService service, IProductService productService, ApplicationDbContext context)
         {
+            _context = context;
             this.service = service;
             this.productService = productService;
         }
@@ -136,6 +138,38 @@ namespace EStore.Controllers
             var data = productService.GetAll(searchTerm);
             return View(data);
         }
+
+        public IActionResult Statistics()
+        {
+           
+            var revenueData = new List<decimal>();
+            var timePeriodLabels = new List<string>();
+
+            // Giả sử bạn có một biến startDate và endDate để xác định khoảng thời gian
+            var startDate = DateTime.Now.AddDays(-3);
+            var endDate = DateTime.Now;
+
+            // Tính tổng doanh thu cho mỗi ngày trong khoảng thời gian
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+            {
+                var totalRevenue = _context.OrderDetails
+                    .Where(od => od.Order.CreateDate.Date == date.Date)
+                    .Sum(od => od.Quantity * od.UnitPrice);
+
+                revenueData.Add((decimal)totalRevenue);
+                timePeriodLabels.Add(date.ToString("dd/MM/yyyy"));
+            }
+
+            var statisticsViewModel = new StatisticsViewModel
+            {
+                RevenueData = revenueData,
+                TimePeriodLabels = timePeriodLabels
+            };
+
+            return View(statisticsViewModel);
+        }
+
+
 
     }
 }
