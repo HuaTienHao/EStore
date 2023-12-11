@@ -6,8 +6,9 @@
 ![image](https://github.com/HuaTienHao/EStore/assets/132989526/654ed7f9-1a99-4157-9ea1-263c159003a4)
 4. Go to Tools -> NuGet Package Manager -> Package Manager Console, type "update-database" to the console and run it to create the database in your SQL Server
 ![image](https://github.com/HuaTienHao/EStore/assets/132989526/a75608d1-59f9-4137-a72e-b0fda3633ae4)
-5. Run the program
-6. Uncomment the code in Program.cs from step 3
+5. Insert all data from Data.sql
+6. Run the program
+7. Uncomment the code in Program.cs from step 3
 
 The Admin user account is:
 Email: admin@gmail.com
